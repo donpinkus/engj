@@ -18,4 +18,5 @@
 //= require hammerjs/hammer
 //= require angular-route/angular-route
 //= require angular-material/angular-material
+//= require bootstrap-sass-official/assets/javascripts/bootstrap
 //= require_tree .

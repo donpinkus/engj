@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   get 'static_pages/index'
+
+  get '/summary/:skill_name', to: "home#summary"
+
   root 'home#index'
 
   # The priority is based upon order of creation: first created -> highest priority.

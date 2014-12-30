@@ -1,42 +1,66 @@
-<nav class="navbar navbar-default" id="topNav" role="navigation">
-  <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-    <a href="/" class="navbar-brand">
-      TechTracker
-    </a>
-  </div>
-</nav>
+<main ng-app="test">
+  <md-toolbar>
+    <h2 class="md-toolbar-tools">
+      <span>TechTracker</span>
+    </h2>
+  </md-toolbar>
 
-<div class="container-fluid" ng-app="test">
-  <div class="alert alert-info">
-    <h4>We help you choose which engineering skills to learn.</h4>
-    <md-button>test</md-button>
-    <ul>
-      <li>See salaries for a skill, or combination of skills.</li>
-      <li>See which skills are trending, and which are becoming obsolete.</li>
-      <li>See the types of companies that want particular skills.</li>
-    </ul>
-  </div>
-  <div class="panel panel-success">
-    <div class="panel-heading">
-      <h1 ng-if="skill">Hello, {{skill}}</h1>
+  <div class="container-fluid" ng-controller="Summarizer">
+    <br/>
+    <div class="alert alert-info">
+      <div layout="row">
+        <h4>We help you choose which engineering skills to learn.</h4>
+      </div>
+      <div layout="row">
+        <ul>
+          <li>See salaries for a skill, or combination of skills.</li>
+          <li>See which skills are trending, and which are becoming obsolete.</li>
+          <li>See the types of companies that want particular skills.</li>
+        </ul>
+      </div>
     </div>
-    <div class="panel-body">
-      <form class="form-inline">
-        <div class="form-group">
-          <div class="input-group">
-            <input class="form-control" type="text" placeholder="Enter a skill" autofocus ng-model="skill">
-            <button class="btn btn-primary">Add</button>
-          </div>
+
+    <br/>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="input-group">
+          <input class="form-control"
+            type="text"
+            placeholder="Enter a skill"
+            autofocus
+            ng-model="skill">
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="button" ng-click="getSkillSummary()">
+              Summarize
+            </button>
+          </span>
         </div>
-      </form>
-      <div class="skillContainer">
+      </div>
+    </div>
+
+    <br/>
+    <div class="row" ng-if="summary">
+      <div class="col-sm-12">
+        <h1>Summary for {{summary.skill}}</h1>
+        <h3>Jobs</h3>
+        <div>
+          Total Jobs: {{summary.total_jobs}}
+        </div>
+        <div>
+          New jobs this week: {{summary.total_jobs}}
+        </div>
+        <hr/>
+        <h3>Salaries</h3>
+        <div>
+          Avg Min Salary: {{summary.avg_min_salary.toLocaleString('en-US', { style: 'currency', currency: 'USD' });}}
+        </div>
+        <div>
+          Avg Max Salary: {{summary.avg_max_salary.toLocaleString('en-US', { style: 'currency', currency: 'USD' });}}
+        </div>
+        <hr/>
+        <h3>Companies</h3>
       </div>
     </div>
   </div>
-</div>
+</main>
