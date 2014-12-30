@@ -13,4 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require angular/angular
+//= require angular-animate/angular-animate
+//= require angular-aria/angular-aria
+//= require hammerjs/hammer
+//= require angular-route/angular-route
+//= require angular-material/angular-material
 //= require_tree .

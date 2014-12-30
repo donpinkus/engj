@@ -29,6 +29,9 @@ gem 'spring',        group: :development
 
 gem 'bower-rails'
 
+# Deal with some crazy angular not finding assets thing.
+gem 'angular-rails-templates'
+
 gem "foreman"
 
 gem "pg"

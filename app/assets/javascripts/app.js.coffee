@@ -1,2 +1,1 @@
-test = angular.module('test',[
-])
+test = angular.module('test',[ 'ngMaterial' ])
