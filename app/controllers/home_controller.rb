@@ -8,9 +8,11 @@ class HomeController < ApplicationController
     jobs = Job.joins(:job_skills).where(job_skills: {name: params[:skill_name]}, jobs: {currency_code: "USD"}).where.not(jobs: {salary_max: nil, salary_min: nil}).where("salary_min < salary_max")
 
     # JOBS
-    new_jobs_this_week = jobs.where("listing_created_at > datetime('now', '-7 days')").count
-    # new_jobs_this_week = jobs.where("listing_created_at BETWEEN LOCALTIMESTAMP - INTERVAL '14 days' AND LOCALTIMESTAMP")
-
+    if Rails.env == "development"
+      new_jobs_this_week = jobs.where("listing_created_at > datetime('now', '-7 days')").count
+    else
+      new_jobs_this_week = jobs.where("listing_created_at > LOCALTIMESTAMP - INTERVAL '7 days'").count
+    end
 
     # SALARIES
 
