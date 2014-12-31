@@ -41,7 +41,7 @@ namespace :data_collection do
     require 'pp'
 
     last_page = 303
-    page = 150
+    page = 1
 
     while (page <= 303)
       # Get Jobs
