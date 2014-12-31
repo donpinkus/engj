@@ -48,15 +48,15 @@
           Total Jobs: {{summary.total_jobs}}
         </div>
         <div>
-          New jobs this week: {{summary.total_jobs}}
+          New jobs this week: {{summary.new_jobs_this_week}}
         </div>
         <hr/>
         <h3>Salaries</h3>
         <div>
-          Avg Min Salary: {{summary.avg_min_salary.toLocaleString('en-US', { style: 'currency', currency: 'USD' });}}
+          Avg Min Salary: {{summary.med_min_salary.toLocaleString('en-US', { style: 'currency', currency: 'USD' });}}
         </div>
         <div>
-          Avg Max Salary: {{summary.avg_max_salary.toLocaleString('en-US', { style: 'currency', currency: 'USD' });}}
+          Avg Max Salary: {{summary.med_max_salary.toLocaleString('en-US', { style: 'currency', currency: 'USD' });}}
         </div>
         <hr/>
         <h3>Companies</h3>

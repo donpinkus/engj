@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20141226092604) do
     t.integer  "angel_id"
     t.string   "title"
     t.text     "description"
-    t.string   "listing_created_at"
+    t.datetime "listing_created_at"
     t.datetime "listing_updated_at"
     t.float    "equity_min"
     t.float    "equity_max"
