@@ -19,4 +19,19 @@
 //= require angular-route/angular-route
 //= require angular-material/angular-material
 //= require bootstrap-sass-official/assets/javascripts/bootstrap
+
+//= require angular-dimple/lib/angular-dimple
+//= require angular-dimple/lib/area
+//= require angular-dimple/lib/bar
+//= require angular-dimple/lib/graph
+//= require angular-dimple/lib/legend
+//= require angular-dimple/lib/line
+//= require angular-dimple/lib/r
+//= require angular-dimple/lib/ring
+//= require angular-dimple/lib/scatter-plot
+//= require angular-dimple/lib/stacked-area
+//= require angular-dimple/lib/stacked-bar
+//= require angular-dimple/lib/x
+//= require angular-dimple/lib/y
+
 //= require_tree .
