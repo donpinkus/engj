@@ -27,12 +27,45 @@ class HomeController < ApplicationController
     sorted = jobs.pluck(:salary_max).sort
     med_max_salary = len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_f / 2
 
+    sql = "
+        SELECT
+          CASE
+            WHEN bucket < 6
+            THEN 60
+            WHEN bucket >= 6 AND bucket < 13
+            THEN bucket * 10
+            WHEN bucket >= 13
+            THEN 13 * 10
+          END AS bucket,
+          SUM(job_count) as job_count
+        FROM (
+          select bucket, count(*) as job_count
+          from (
+            SELECT CAST(salary_min/10000 AS int) AS bucket
+            FROM jobs
+            INNER JOIN job_skills
+            ON jobs.id = job_skills.job_id
+            AND job_skills.name = '#{params[:skill_name]}'
+            WHERE currency_code = 'USD'
+            AND salary_min < 250000
+            AND salary_min > 10000
+          ) as t1
+          GROUP BY bucket
+        )
+        GROUP BY bucket
+        ORDER BY bucket ASC
+      "
+
+    records_array = ActiveRecord::Base.connection.execute(sql)
+
+    records_json = records_array.to_json
 
     summary = {
       total_jobs: jobs.count,
       med_min_salary: med_min_salary,
       med_max_salary: med_max_salary,
       new_jobs_this_week: new_jobs_this_week,
+      salary_buckets: records_json,
       skill: params[:skill_name]
     }
 

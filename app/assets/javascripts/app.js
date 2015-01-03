@@ -10,38 +10,10 @@ test.controller('Summarizer', ['$scope', '$http', function($scope, $http){
         console.log(data);
         console.log(data.total_jobs);
         $scope.summary = data;
+        $scope.graphData = JSON.parse(data["salary_buckets"]);
       }).
       error(function(data, status, headers, config) {
         console.log(data);
       });
   }
-
-  $scope.graphData = [
-    {
-      "Month": "Jan-11",
-      "storeId": 1,
-      "Sales": 14
-    },{
-      "Month": "Feb-11",
-      "storeId": 1,
-      "Sales": 14
-    },{
-      "Month": "March-11",
-      "storeId": 1,
-      "Sales": 17
-    },{
-      "Month": "Jan-11",
-      "storeId": 2,
-      "Sales": 14
-    },{
-      "Month": "Feb-11",
-      "storeId": 2,
-      "Sales": 16
-    },{
-      "Month": "March-11",
-      "storeId": 2,
-      "Sales": 8
-    }
-  ];
-
 }]);

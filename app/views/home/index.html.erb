@@ -58,18 +58,15 @@
         <div>
           Avg Max Salary: {{summary.med_max_salary.toLocaleString('en-US', { style: 'currency', currency: 'USD' });}}
         </div>
+        <graph data="graphData" width="100%" height="300px">
+          <x field="bucket"></x>
+          <y field="job_count"></y>
+          <bar field="bucket"></line>
+        </graph>
         <hr/>
         <h3>Companies</h3>
       </div>
     </div>
-
-    <graph data="graphData">
-      <x-axis field="Month"></x-axis>
-      <y-axis field="Sales"></y-axis>
-      <line field="storeId" value="2"></line>
-      <line field="storeId" value="1"></line>
-    </graph>
-
   </div>
 </main>
 
