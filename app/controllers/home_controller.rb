@@ -32,10 +32,10 @@ class HomeController < ApplicationController
           CASE
             WHEN bucket < 6
             THEN 60
-            WHEN bucket >= 6 AND bucket < 13
+            WHEN bucket >= 6 AND bucket < 15
             THEN bucket * 10
-            WHEN bucket >= 13
-            THEN 13 * 10
+            WHEN bucket >= 15
+            THEN 15 * 10
           END AS bucket,
           SUM(job_count) as job_count
         FROM (
@@ -51,7 +51,7 @@ class HomeController < ApplicationController
             AND salary_min > 10000
           ) as t1
           GROUP BY bucket
-        )
+        ) as t2
         GROUP BY bucket
         ORDER BY bucket ASC
       "
