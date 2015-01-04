@@ -1,6 +1,8 @@
 {
   "name": "dsl-generated dependencies",
   "dependencies": {
+    "d3": "latest",
+    "dimple": "latest",
     "angular": "latest",
     "angular-route": "latest",
     "angular-material": "latest",

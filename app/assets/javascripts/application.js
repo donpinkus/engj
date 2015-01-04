@@ -10,8 +10,12 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+
 //= require jquery
 //= require jquery_ujs
+
+//= require d3/d3
+//= require dimple/dist/dimple.latest
 //= require angular/angular
 //= require angular-animate/angular-animate
 //= require angular-aria/angular-aria
