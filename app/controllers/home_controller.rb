@@ -14,12 +14,23 @@ class HomeController < ApplicationController
       new_jobs_this_week = jobs.where("listing_created_at > LOCALTIMESTAMP - INTERVAL '7 days'").count
     end
 
+    sql = "
+      SELECT
+        strftime('%Y-%m', listing_created_at) AS month,
+        COUNT(1) AS new_job_count
+      FROM jobs
+      INNER JOIN job_skills
+        ON jobs.id = job_skills.job_id
+        AND job_skills.name = '#{params[:skill_name]}'
+      WHERE currency_code = 'USD'
+      GROUP BY month"
+
+
+    records = ActiveRecord::Base.connection.execute(sql)
+    new_jobs_by_month = records.to_json
+
+
     # SALARIES
-
-    # avg_min_salary = (jobs.pluck(:salary_min).sum.to_f / jobs.count).to_i
-
-    # avg_max_salary = (jobs.pluck(:salary_max).sum.to_f / jobs.count).to_i
-
     len = jobs.length
     sorted = jobs.pluck(:salary_min).sort
     med_min_salary = len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_f / 2
@@ -27,7 +38,7 @@ class HomeController < ApplicationController
     sorted = jobs.pluck(:salary_max).sort
     med_max_salary = len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_f / 2
 
-    sql = "
+    bucketed_salaries_sql = "
         SELECT
           CASE
             WHEN bucket < 6
@@ -41,14 +52,14 @@ class HomeController < ApplicationController
         FROM (
           select bucket, count(*) as job_count
           from (
-            SELECT CAST(salary_min/10000 AS int) AS bucket
+            SELECT CAST(salary_max/10000 AS int) AS bucket
             FROM jobs
             INNER JOIN job_skills
             ON jobs.id = job_skills.job_id
             AND job_skills.name = '#{params[:skill_name]}'
             WHERE currency_code = 'USD'
-            AND salary_min < 250000
-            AND salary_min > 10000
+            AND salary_max < 250000
+            AND salary_max > 10000
           ) as t1
           GROUP BY bucket
         ) as t2
@@ -56,16 +67,17 @@ class HomeController < ApplicationController
         ORDER BY bucket ASC
       "
 
-    records_array = ActiveRecord::Base.connection.execute(sql)
+    bucketed_salaries_records = ActiveRecord::Base.connection.execute(bucketed_salaries_sql)
 
-    records_json = records_array.to_json
+    bucketed_salaries_json = bucketed_salaries_records.to_json
 
     summary = {
       total_jobs: jobs.count,
+      new_jobs_this_week: new_jobs_this_week,
+      new_jobs_by_month: new_jobs_by_month,
       med_min_salary: med_min_salary,
       med_max_salary: med_max_salary,
-      new_jobs_this_week: new_jobs_this_week,
-      salary_buckets: records_json,
+      salary_buckets: bucketed_salaries_json,
       skill: params[:skill_name]
     }
 

@@ -17,4 +17,9 @@
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap";
 
-@import "angular-material/angular-material"
+@import "angular-material/angular-material";
+
+
+graph {
+  box-sizing: initial;
+}

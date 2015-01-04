@@ -10,7 +10,8 @@ test.controller('Summarizer', ['$scope', '$http', function($scope, $http){
         console.log(data);
         console.log(data.total_jobs);
         $scope.summary = data;
-        $scope.graphData = JSON.parse(data["salary_buckets"]);
+        $scope.bucketedSalaries = JSON.parse(data["salary_buckets"]);
+        $scope.bucketedJobs = JSON.parse(data["new_jobs_by_month"])
       }).
       error(function(data, status, headers, config) {
         console.log(data);
