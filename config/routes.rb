@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   get 'static_pages/index'
 
-  get '/summary/:skill_name', to: "home#summary"
+  get '/summary', to: 'home#summary'
+  get '/skill_analyzer/:skill_name', to: 'home#skill_analyzer'
 
   root 'home#index'
 

@@ -3,7 +3,8 @@ var myApp = angular.module('myApp', ['templates', 'ngMaterial', 'angular-dimple'
 myApp.config(function($routeProvider) {
   $routeProvider
   .when('/', {
-    templateUrl: 'pages/summary.html'
+    templateUrl: 'pages/summary.html',
+    controller: 'summary'
   })
   .when('/skill-analyzer', {
     templateUrl: 'pages/skill-analyzer.html',
@@ -15,6 +16,7 @@ myApp.config(function($routeProvider) {
   });
 });
 
+
 myApp.service('nameService', function(){
   var self = this;
 
@@ -24,15 +26,31 @@ myApp.service('nameService', function(){
   }
 });
 
+
+myApp.controller('summary', ['$scope', '$http', '$log', '$routeParams', function($scope, $http, $log, $routeParams){
+  $http.get('/summary')
+    .success(function(data, status, headers, config) {
+      $scope.summary = data;
+      $scope.skillFrequencies = JSON.parse(data["skill_frequencies"]);
+      $scope.frequencyVsSalary = JSON.parse(data["frequency_vs_salary"]);
+    })
+    .error(function(data, status, headers, config) {
+      console.log(data);
+    });
+}]);
+
+
 myApp.controller('skillAnalyzer', ['$scope', '$http', '$log', '$routeParams', function($scope, $http, $log, $routeParams){
   $scope.skill = $routeParams.skill || '';
 
   $scope.getSkillSummary = function() {
-    $http.get('/summary/' + $scope.skill).
+    $http.get('/skill_analyzer/' + $scope.skill).
       success(function(data, status, headers, config) {
+        console.log(data);
         $scope.summary = data;
         $scope.bucketedSalaries = JSON.parse(data["salary_buckets"]);
         $scope.bucketedJobs = JSON.parse(data["new_jobs_by_month"])
+        console.log($scope.bucketedSalaries);
       }).
       error(function(data, status, headers, config) {
         console.log(data);

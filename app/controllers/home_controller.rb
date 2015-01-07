@@ -3,6 +3,58 @@ class HomeController < ApplicationController
   end
 
   def summary
+    total_jobs = Job.count
+    distinct_skills = JobSkill.distinct.count(:name)
+    skill_counts = JobSkill.group(:name).count
+
+    sql = "
+      SELECT
+        COUNT(1) as skill_occurrences,
+        name
+      FROM job_skills
+      GROUP BY name
+      HAVING COUNT(1) > 1
+      ORDER BY skill_occurrences DESC
+      LIMIT 50"
+
+    records = ActiveRecord::Base.connection.execute(sql)
+    skill_frequencies = records.to_json
+
+    sql = "
+      SELECT
+        CAST(AVG(salary) AS INT) AS avg_salary,
+        skill_name,
+        COUNT(1) AS skill_frequency
+      FROM (
+        SELECT
+          (salary_max + salary_min) / 2 AS salary,
+          job_skills.name AS skill_name
+        FROM jobs
+        INNER JOIN job_skills
+        ON jobs.id = job_skills.job_id
+        WHERE currency_code = 'USD'
+        AND salary_max < 250000
+        AND salary_max > 10000
+        ORDER BY skill_name ASC
+      ) as t1
+      GROUP BY skill_name
+      HAVING COUNT(1) > 10
+      ORDER BY avg_salary DESC"
+
+    records = ActiveRecord::Base.connection.execute(sql)
+    frequency_vs_salary = records.to_json
+
+    summary = {
+      total_jobs: total_jobs,
+      distinct_skills: distinct_skills,
+      skill_frequencies: skill_frequencies,
+      frequency_vs_salary: frequency_vs_salary
+    }
+
+    render json: summary
+  end
+
+  def skill_analyzer
     job_skills = JobSkill.where(name: params[:skill_name])
 
     jobs = Job.joins(:job_skills).where(job_skills: {name: params[:skill_name]}, jobs: {currency_code: "USD"}).where.not(jobs: {salary_max: nil, salary_min: nil}).where("salary_min < salary_max")
@@ -21,7 +73,6 @@ class HomeController < ApplicationController
       WHERE currency_code = 'USD'
       GROUP BY month"
 
-
     records = ActiveRecord::Base.connection.execute(sql)
     new_jobs_by_month = records.to_json
 
@@ -29,10 +80,10 @@ class HomeController < ApplicationController
     # SALARIES
     len = jobs.length
     sorted = jobs.pluck(:salary_min).sort
-    med_min_salary = 25
+    med_min_salary = len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_f / 2
 
     sorted = jobs.pluck(:salary_max).sort
-    med_max_salary = 32
+    med_max_salary = len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_f / 2
 
     bucketed_salaries_sql = "
         SELECT
