@@ -41,7 +41,7 @@ namespace :data_collection do
     require 'pp'
 
     last_page = 303
-    page = 160
+    page = 1
 
     while (page <= 303)
       # Get Jobs
@@ -52,7 +52,7 @@ namespace :data_collection do
       puts result["jobs"].count
 
       result["jobs"].each do |j|
-        puts "hi \n\n\n"
+        puts "\n\n JOB \n"
         job = Job.new
         job.angel_id = j["id"]
         job.title = j["title"]
@@ -95,22 +95,26 @@ namespace :data_collection do
 
         begin
           if job.save
+            puts job.to_yaml
+
             # Skills
-            skills = []
             j["tags"].each do |t|
               if t["tag_type"] == "SkillTag"
+
+                puts t["name"]
                 skill = JobSkill.new
                 skill.angel_id = t["id"]
                 skill.name = t["name"]
                 skill.job_id = job.id
-                skill.save
+                if skill.save
+                else
+                    puts "-- SKILL FAILED TO SAVE --"
+                end
               end
             end
           end
         rescue
         end
-
-        puts job.to_yaml
       end
 
       page = page + 1

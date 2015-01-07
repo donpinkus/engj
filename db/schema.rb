@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20141226092604) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "job_skills", force: true do |t|
     t.integer  "job_id"
     t.string   "name"
@@ -21,7 +24,7 @@ ActiveRecord::Schema.define(version: 20141226092604) do
     t.datetime "updated_at"
   end
 
-  add_index "job_skills", ["job_id"], name: "index_job_skills_on_job_id"
+  add_index "job_skills", ["job_id"], name: "index_job_skills_on_job_id", using: :btree
 
   create_table "jobs", force: true do |t|
     t.integer  "angel_id"

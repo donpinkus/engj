@@ -29,10 +29,10 @@ class HomeController < ApplicationController
     # SALARIES
     len = jobs.length
     sorted = jobs.pluck(:salary_min).sort
-    med_min_salary = len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_f / 2
+    med_min_salary = 25
 
     sorted = jobs.pluck(:salary_max).sort
-    med_max_salary = len % 2 == 1 ? sorted[len/2] : (sorted[len/2 - 1] + sorted[len/2]).to_f / 2
+    med_max_salary = 32
 
     bucketed_salaries_sql = "
         SELECT
