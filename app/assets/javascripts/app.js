@@ -1,17 +1,31 @@
-var test = angular.module('test', ['templates', 'ngMaterial', 'angular-dimple', 'ngRoute']);
+var myApp = angular.module('myApp', ['templates', 'ngMaterial', 'angular-dimple', 'ngRoute']);
 
-test.config(function($routeProvider) {
+myApp.config(function($routeProvider) {
   $routeProvider
   .when('/', {
-    templateUrl: 'pages/summary.html',
-    controller: 'summary'
+    templateUrl: 'pages/summary.html'
   })
-  .when('/second', {
-    templateUrl: 'pages/second.html'
+  .when('/skill-analyzer', {
+    templateUrl: 'pages/skill-analyzer.html',
+    controller: 'skillAnalyzer'
+  })
+  .when('/skill-analyzer/:skill', {
+    templateUrl: 'pages/skill-analyzer.html',
+    controller: 'skillAnalyzer'
   });
 });
 
-test.controller('summary', ['$scope', '$http', '$log', function($scope, $http, $log){
+myApp.service('nameService', function(){
+  var self = this;
+
+  this.name = "John Doe";
+  this.nameLength = function(){
+    return self.name.length;
+  }
+});
+
+myApp.controller('skillAnalyzer', ['$scope', '$http', '$log', '$routeParams', function($scope, $http, $log, $routeParams){
+  $scope.skill = $routeParams.skill || '';
 
   $scope.getSkillSummary = function() {
     $http.get('/summary/' + $scope.skill).
