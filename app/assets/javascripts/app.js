@@ -17,14 +17,14 @@ myApp.config(function($routeProvider) {
 });
 
 
-myApp.service('nameService', function(){
-  var self = this;
+// myApp.service('nameService', function(){
+//   var self = this;
 
-  this.name = "John Doe";
-  this.nameLength = function(){
-    return self.name.length;
-  }
-});
+//   this.name = "John Doe";
+//   this.nameLength = function(){
+//     return self.name.length;
+//   }
+// });
 
 
 myApp.controller('summary', ['$scope', '$http', '$log', '$routeParams', function($scope, $http, $log, $routeParams){
