@@ -1,6 +1,6 @@
 var myApp = angular.module('myApp', ['templates', 'ngMaterial', 'angular-dimple', 'ngRoute']);
 
-myApp.config(function($routeProvider) {
+myApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider
   .when('/', {
     templateUrl: 'pages/summary.html',
@@ -14,7 +14,7 @@ myApp.config(function($routeProvider) {
     templateUrl: 'pages/skill-analyzer.html',
     controller: 'skillAnalyzer'
   });
-});
+}]);
 
 
 // myApp.service('nameService', function(){

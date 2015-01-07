@@ -35,6 +35,8 @@ class HomeController < ApplicationController
         WHERE currency_code = 'USD'
         AND salary_max < 250000
         AND salary_max > 10000
+        AND salary_min > 40000
+        AND salary_min < salary_max
         ORDER BY skill_name ASC
       ) as t1
       GROUP BY skill_name
