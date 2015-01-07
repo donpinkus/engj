@@ -1,87 +1,25 @@
 <main ng-app="test">
   <md-toolbar>
-    <h2 class="md-toolbar-tools">
-      <span>TechTracker</span>
-    </h2>
+    <div class="md-toolbar-tools">
+      <h2>TechTracker</h2>
+      <span flex></span>
+      <md-button>
+        Summary
+      </md-button>
+      <md-button>
+        Skill analyzer
+      </md-button>
+      <md-button>
+        Skill Comparer
+      </md-button>
+      <md-button>
+        Stack analyzer
+      </md-button>
+    </div>
   </md-toolbar>
 
-  <div class="container-fluid" ng-controller="Summarizer">
-    <br/>
-    <div class="alert alert-info">
-      <div layout="row">
-        <h4>We help you choose which engineering skills to learn.</h4>
-      </div>
-      <div layout="row">
-        <ul>
-          <li>See salaries for a skill, or combination of skills.</li>
-          <li>See which skills are trending, and which are becoming obsolete.</li>
-          <li>See the types of companies that want particular skills.</li>
-        </ul>
-      </div>
-    </div>
-
-    <br/>
-
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="input-group">
-          <input class="form-control"
-            type="text"
-            placeholder="Enter a skill"
-            autofocus
-            ng-model="skill">
-          <span class="input-group-btn">
-            <button class="btn btn-primary" type="button" ng-click="getSkillSummary()">
-              Summarize
-            </button>
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <br/>
-    <div ng-if="summary">
-      <div class="row">
-        <div class="col-sm-12">
-          <h1>Summary for {{summary.skill}}</h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6">
-          <h2>Job Market</h2>
-          <div>
-            Total Jobs: {{summary.total_jobs}}
-          </div>
-          <div>
-            New jobs this week: {{summary.new_jobs_this_week}}
-          </div>
-          <graph data="bucketedJobs" width="100%" height="300px">
-            <x field="month" order-by="Date"></x>
-            <y field="new_job_count"></y>
-            <line field="new_jobs"></line>
-          </graph>
-        </div>
-
-        <div class="col-sm-6">
-          <h2>Salaries</h2>
-          <div>
-            Avg Min Salary: {{summary.med_min_salary.toLocaleString('en-US', { style: 'currency', currency: 'USD' });}}
-          </div>
-          <div>
-            Avg Max Salary: {{summary.med_max_salary.toLocaleString('en-US', { style: 'currency', currency: 'USD' });}}
-          </div>
-          <graph data="bucketedSalaries" width="100%" height="300px">
-            <x field="bucket"></x>
-            <y field="job_count"></y>
-            <bar field="bucket"></bar>
-          </graph>
-        </div>
-
-        <div class="col-sm-6">
-          <h2>Companies</h2>
-        </div>
-      </div>
-    </div>
+  <div class="view-container">
+    <div ng-view class="view-frame animate-view"></div>
   </div>
 </main>
 

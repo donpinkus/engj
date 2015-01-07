@@ -16,12 +16,15 @@
 
 //= require d3/d3
 //= require dimple/dist/dimple.latest
+
 //= require angular/angular
 //= require angular-animate/angular-animate
 //= require angular-aria/angular-aria
 //= require hammerjs/hammer
 //= require angular-route/angular-route
+//= require angular-rails-templates
 //= require angular-material/angular-material
+
 //= require bootstrap-sass-official/assets/javascripts/bootstrap
 
 //= require angular-dimple/lib/angular-dimple
