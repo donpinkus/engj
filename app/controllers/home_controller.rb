@@ -7,6 +7,14 @@ class HomeController < ApplicationController
     distinct_skills = JobSkill.distinct.count(:name)
     skill_counts = JobSkill.group(:name).count
 
+    if params[:role_filter] && params[:role_filter] != 'null'
+      where_clause = " WHERE jobs.role = '#{params[:role_filter]}' "
+      and_clause = " AND jobs.role = '#{params[:role_filter]}' "
+    else
+      where_clause = ' '
+      and_clause = ' '
+    end
+
     sql = "
       SELECT
         COUNT(1) as skill_occurrences,
@@ -37,6 +45,7 @@ class HomeController < ApplicationController
         AND salary_max > 10000
         AND salary_min > 40000
         AND salary_min < salary_max
+        " + and_clause + "
         ORDER BY skill_name ASC
       ) as t1
       GROUP BY skill_name

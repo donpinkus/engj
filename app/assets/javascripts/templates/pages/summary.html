@@ -1,14 +1,48 @@
 <div class="container-fluid">
   <h1>Summary</h1>
 
-  <h2>Skill Frequencies - Top 50</h2>
+  <h4>Filter by Role</h4>
+  <div class="btn-group">
+    <label class="btn btn-primary" ng-model="roleFilter" btn-radio="null">
+      All
+    </label>
+    <label class="btn btn-primary" ng-model="roleFilter" btn-radio="'frontend developer'">
+      Frontend
+    </label>
+    <label class="btn btn-primary" ng-model="roleFilter" btn-radio="'backend developer'">
+      Backend
+    </label>
+    <label class="btn btn-primary" ng-model="roleFilter" btn-radio="'full stack developer'">
+      Full Stack
+    </label>
+    <label class="btn btn-primary" ng-model="roleFilter" btn-radio="'mobile_developer'">
+      Mobile
+    </label>
+    <label class="btn btn-primary" ng-model="roleFilter" btn-radio="'data scientist'">
+      Data Scientist
+    </label>
+    <label class="btn btn-primary" ng-model="roleFilter" btn-radio="'devops'">
+      Devops
+    </label>
+    <label class="btn btn-primary" ng-model="roleFilter" btn-radio="'product_manager'">
+      Product Manager
+    </label>
+    <label class="btn btn-primary" ng-model="roleFilter" btn-radio="'designer'">
+      Designer
+    </label>
+    <label class="btn btn-primary" ng-model="roleFilter" btn-radio="'developer'">
+      Not specified
+    </label>
+  </div>
+
+  <h2># of Jobs for each skill</h2>
   <graph data="skillFrequencies" width="100%" height="300px">
     <x field="name"></x>
     <y field="skill_occurrences"></y>
     <bar field="skill_occurrences"></bar>
   </graph>
 
-  <h2>Skill Frequency vs. Salary</h2>
+  <h2># of Jobs vs. Average Salary</h2>
   <graph data="frequencyVsSalary" width="100%" height="600px">
     <x field="skill_frequency" type="Measure"></x>
     <y field="avg_salary" type="Measure"></y>

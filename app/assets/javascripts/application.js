@@ -41,4 +41,6 @@
 //= require angular-dimple/lib/x
 //= require angular-dimple/lib/y
 
+//= require angular-bootstrap/ui-bootstrap-tpls.js
+
 //= require_tree .

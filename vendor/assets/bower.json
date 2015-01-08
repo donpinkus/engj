@@ -7,6 +7,7 @@
     "angular-route": "latest",
     "angular-material": "latest",
     "bootstrap-sass-official": "latest",
-    "angular-dimple": "latest"
+    "angular-dimple": "latest",
+    "angular-bootstrap": "latest"
   }
 }

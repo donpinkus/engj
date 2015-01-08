@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get 'static_pages/index'
 
   get '/summary', to: 'home#summary'
+  get '/summary/:role_filter', to: 'home#summary'
   get '/skill_analyzer/:skill_name', to: 'home#skill_analyzer'
 
   root 'home#index'

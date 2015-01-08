@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['templates', 'ngMaterial', 'angular-dimple', 'ngRoute']);
+var myApp = angular.module('myApp', ['templates', 'ngMaterial', 'angular-dimple', 'ngRoute', 'ui.bootstrap']);
 
 myApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider
@@ -28,6 +28,21 @@ myApp.config(['$routeProvider', function($routeProvider) {
 
 
 myApp.controller('summary', ['$scope', '$http', '$log', '$routeParams', function($scope, $http, $log, $routeParams){
+  $scope.roleFilter = null;
+
+  $scope.$watch('roleFilter', function(){
+    console.log('role changed!');
+    $http.get('/summary/' + $scope.roleFilter)
+      .success(function(data, status, headers, config) {
+        $scope.summary = data;
+        $scope.skillFrequencies = JSON.parse(data["skill_frequencies"]);
+        $scope.frequencyVsSalary = JSON.parse(data["frequency_vs_salary"]);
+      })
+      .error(function(data, status, headers, config) {
+        console.log(data);
+      });
+  });
+
   $http.get('/summary')
     .success(function(data, status, headers, config) {
       $scope.summary = data;
