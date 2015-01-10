@@ -20,6 +20,9 @@ class HomeController < ApplicationController
         COUNT(1) as skill_occurrences,
         name
       FROM job_skills
+      LEFT OUTER JOIN jobs
+      ON job_skills.job_id = jobs.id
+      " + where_clause + "
       GROUP BY name
       HAVING COUNT(1) > 1
       ORDER BY skill_occurrences DESC
