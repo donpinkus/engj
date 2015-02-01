@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150201204732) do
+ActiveRecord::Schema.define(version: 20150201222610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "companies", force: true do |t|
+  create_table "companies", primary_key: "angel_id", force: true do |t|
     t.boolean  "hidden"
     t.boolean  "community_profile"
     t.string   "name"
@@ -60,12 +60,7 @@ ActiveRecord::Schema.define(version: 20150201204732) do
     t.string   "angellist_url"
     t.string   "location"
     t.string   "role"
-    t.string   "company_name"
     t.integer  "company_id"
-    t.string   "logo_url"
-    t.text     "product_desc"
-    t.text     "high_concept"
-    t.string   "company_url"
     t.integer  "page_id"
     t.datetime "created_at"
     t.datetime "updated_at"

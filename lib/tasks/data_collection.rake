@@ -20,6 +20,8 @@ namespace :data_collection do
         puts "\n\n JOB \n"
         job = Job.new
         job.angel_id = j["id"]
+        job.company_angel_id = j["startup"]["id"]
+
         job.title = j["title"]
         job.description = j["description"]
         job.listing_created_at = j["created_at"]
@@ -31,6 +33,7 @@ namespace :data_collection do
         job.salary_min = j["salary_min"]
         job.salary_max = j["salary_max"]
         job.angellist_url = j["angellist_url"]
+
 
         location = nil
         j["tags"].each do |t|
@@ -47,16 +50,6 @@ namespace :data_collection do
           end
         end
         job.role = role
-
-        # Company details
-        startup = j["startup"]
-        job.company_name = startup["name"]
-        job.company_id = startup["id"]
-        job.logo_url = startup["logo_url"]
-        job.product_desc = startup["product_desc"]
-        job.high_concept = startup["high_concept"]
-        job.company_url = startup["company_url"]
-        job.page_id = result["page"]
 
         begin
           if job.save
@@ -77,6 +70,18 @@ namespace :data_collection do
                 end
               end
             end
+
+            # Company
+            company_angel_id = job.company_angel_id
+
+            if !Company.exists?(angel_id: company_angel_id)
+              company = Company.new
+              company.angel_id = company_angel_id
+              # Fetch company info.
+
+            end
+
+
           end
         rescue
         end
@@ -84,6 +89,9 @@ namespace :data_collection do
 
       page = page + 1
     end
+  end
+
+  task angel_companies: :environment do
   end
 
 end

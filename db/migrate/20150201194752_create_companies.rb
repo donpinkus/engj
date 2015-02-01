@@ -1,6 +1,7 @@
 class CreateCompanies < ActiveRecord::Migration
   def change
-    create_table :companies do |t|
+    create_table :companies, id: false do |t|
+      t.primary_key :angel_id
       t.boolean :hidden
       t.boolean :community_profile
       t.string :name

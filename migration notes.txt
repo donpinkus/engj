@@ -39,3 +39,5 @@ has_one location_tag
     #   display_name
 
     # rails g JobSkill job:references name:string id:integer
+
+
