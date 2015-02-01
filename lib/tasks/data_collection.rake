@@ -1,41 +1,6 @@
 namespace :data_collection do
   desc "TODO"
   task angel: :environment do
-    # https://api.angel.co/1/jobs
-
-    # jobs
-    #   id
-    #   angel_id
-    #   title
-    #   description
-    #   created_at
-    #   updated_at
-    #   equity_min
-    #   equity_max
-    #   currency_code
-    #   job_type
-    #   salary_min
-    #   salary_max
-    #   angellist_url
-    #   location (tags.tag_type=LocationTag&name)
-    #   role (tags.tag_type=RoleTag&name)
-    #   company_name (startup.name)
-    #   company_id (startup.id)
-    #   logo_url (startup.logo_url)
-    #   product_desc (startup.product_desc)
-    #   high_concept (startup.high_concept)
-    #   company_url (startup.company_url)
-    #   page_id
-
-    # jobs an hgel_id:integer title:string description:text listing_created_at:string listing_updated_at:datetime equity_min:float equity_max:float currency_code:string job_type:string salary_min:integer salary_max:integer angellist_url:string location:string role:string company_name:string company_id:integer logo_url:string product_desc:text high_concept:text company_url:string page_id:integer
-
-    # job_skills
-    #   angel_id
-    #   job_id
-    #   display_name
-
-    # rails g JobSkill job:references name:string id:integer
-
     require 'open-uri'
     require 'json'
     require 'pp'
@@ -108,7 +73,7 @@ namespace :data_collection do
                 skill.job_id = job.id
                 if skill.save
                 else
-                    puts "-- SKILL FAILED TO SAVE --"
+                  puts "-- SKILL FAILED TO SAVE --"
                 end
               end
             end

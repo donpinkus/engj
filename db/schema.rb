@@ -11,14 +11,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141226092604) do
+ActiveRecord::Schema.define(version: 20150201204732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "companies", force: true do |t|
+    t.boolean  "hidden"
+    t.boolean  "community_profile"
+    t.string   "name"
+    t.string   "angellist_url"
+    t.string   "logo_url"
+    t.string   "thumb_url"
+    t.integer  "quality"
+    t.text     "product_desc"
+    t.text     "high_concept"
+    t.integer  "follower_count"
+    t.string   "company_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "twitter_url"
+    t.string   "blog_url"
+    t.string   "video_url"
+  end
+
   create_table "job_skills", force: true do |t|
     t.integer  "job_id"
-    t.string   "name"
+    t.text     "name"
     t.integer  "angel_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -28,7 +47,7 @@ ActiveRecord::Schema.define(version: 20141226092604) do
 
   create_table "jobs", force: true do |t|
     t.integer  "angel_id"
-    t.string   "title"
+    t.text     "title"
     t.text     "description"
     t.datetime "listing_created_at"
     t.datetime "listing_updated_at"
@@ -36,8 +55,8 @@ ActiveRecord::Schema.define(version: 20141226092604) do
     t.float    "equity_max"
     t.string   "currency_code"
     t.string   "job_type"
-    t.integer  "salary_min"
-    t.integer  "salary_max"
+    t.integer  "salary_min",         limit: 8
+    t.integer  "salary_max",         limit: 8
     t.string   "angellist_url"
     t.string   "location"
     t.string   "role"
