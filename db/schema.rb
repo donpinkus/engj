@@ -28,11 +28,13 @@ ActiveRecord::Schema.define(version: 20150201222610) do
     t.text     "high_concept"
     t.integer  "follower_count"
     t.string   "company_url"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.date     "angel_created_at"
+    t.date     "angel_updated_at"
     t.string   "twitter_url"
     t.string   "blog_url"
     t.string   "video_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "job_skills", force: true do |t|

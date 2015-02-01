@@ -77,11 +77,30 @@ namespace :data_collection do
             if !Company.exists?(angel_id: company_angel_id)
               company = Company.new
               company.angel_id = company_angel_id
+
               # Fetch company info.
+              path = "https://api.angel.co/1/startups/#{company_angel_id}"
+              buffer = open(path).read
+              company_result = JSON.parse(buffer)
 
+              # Set company info
+              company.hidden = company_result["hidden"]
+              company.community_profile = company_result["community_profile"]
+              company.name = company_result["name"]
+              company.angellist_url = company_result["angellist_url"]
+              company.logo_url = company_result["logo_url"]
+              company.thumb_url = company_result["thumb_url"]
+              company.quality = company_result["quality"]
+              company.product_desc = company_result["product_desc"]
+              company.high_concept = company_result["high_concept"]
+              company.follower_count = company_result["follower_count"]
+              company.company_url = company_result["company_url"]
+              company.angel_created_at = company_result["angel_created_at"]
+              company.angel_updated_at = company_result["angel_updated_at"]
+              company.twitter_url = company_result["twitter_url"]
+              company.blog_url = company_result["blog_url"]
+              company.video_url = company_result["video_url"]
             end
-
-
           end
         rescue
         end

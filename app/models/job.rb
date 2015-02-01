@@ -1,5 +1,5 @@
 class Job < ActiveRecord::Base
-  belongs_to :company
+  belongs_to :company, foreign_key: "angel_id"
   has_many :job_skills
 
   validates_uniqueness_of :angel_id

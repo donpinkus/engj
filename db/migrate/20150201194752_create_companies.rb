@@ -13,8 +13,8 @@ class CreateCompanies < ActiveRecord::Migration
       t.text :high_concept
       t.integer :follower_count
       t.string :company_url
-      t.date :created_at
-      t.date :updated_at
+      t.date :angel_created_at
+      t.date :angel_updated_at
       t.string :twitter_url
       t.string :blog_url
       t.string :video_url
