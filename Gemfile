@@ -38,6 +38,8 @@ gem "pg"
 
 gem 'seed_dump'
 
+gem 'httparty'
+
 group :production, :staging do
   gem "rails_12factor"
   gem "rails_stdout_logging"

@@ -75,13 +75,29 @@ namespace :data_collection do
             company_angel_id = job.company_angel_id
 
             if !Company.exists?(angel_id: company_angel_id)
+              puts "Getting company info for #{company_angel_id}"
+
               company = Company.new
               company.angel_id = company_angel_id
 
               # Fetch company info.
-              path = "https://api.angel.co/1/startups/#{company_angel_id}"
-              buffer = open(path).read
-              company_result = JSON.parse(buffer)
+              response = HTTParty.get("https://api.angel.co/1/startups/#{angel_id}")
+
+              puts response.code
+
+              if response.code == 404
+                puts "This company no longer exists."
+                company.deleted = true
+                company.save
+                next
+              elsif response.code == 403
+                puts "Over rate limit."
+                break
+              end
+
+              company_result = JSON.parse(response.body)
+
+              puts company_result.to_yaml
 
               # Set company info
               company.hidden = company_result["hidden"]
@@ -100,7 +116,10 @@ namespace :data_collection do
               company.twitter_url = company_result["twitter_url"]
               company.blog_url = company_result["blog_url"]
               company.video_url = company_result["video_url"]
+
+              company.save
             end
+
           end
         rescue
         end
@@ -110,7 +129,80 @@ namespace :data_collection do
     end
   end
 
-  task angel_companies: :environment do
-  end
+  task populate_angel_companies: :environment do
+    # response = HTTParty.get('https://api.stackexchange.com/2.2/questions?site=stackoverflow')
 
+    # puts response.body, response.code, response.message, response.headers.inspect
+
+    company_angel_ids = Job.uniq.pluck(:company_angel_id)
+
+    company_angel_ids.each do |angel_id|
+      puts angel_id
+
+      if !Company.exists?(angel_id: angel_id)
+        puts "Getting company info for #{angel_id}"
+
+        company = Company.new
+        company.angel_id = angel_id
+
+        # Fetch company info.
+        response = HTTParty.get("https://api.angel.co/1/startups/#{angel_id}")
+
+        puts response.code
+
+        if response.code == 404
+          puts "This company no longer exists."
+          company.deleted = true
+          company.save
+          next
+        elsif response.code == 403
+          puts "Over rate limit."
+          break
+        end
+
+        company_result = JSON.parse(response.body)
+
+        puts company_result.to_yaml
+
+        # Set company info
+        company.hidden = company_result["hidden"]
+        company.community_profile = company_result["community_profile"]
+        company.name = company_result["name"]
+        company.angellist_url = company_result["angellist_url"]
+        company.logo_url = company_result["logo_url"]
+        company.thumb_url = company_result["thumb_url"]
+        company.quality = company_result["quality"]
+        company.product_desc = company_result["product_desc"]
+        company.high_concept = company_result["high_concept"]
+        company.follower_count = company_result["follower_count"]
+        company.company_url = company_result["company_url"]
+        company.angel_created_at = company_result["angel_created_at"]
+        company.angel_updated_at = company_result["angel_updated_at"]
+        company.twitter_url = company_result["twitter_url"]
+        company.blog_url = company_result["blog_url"]
+        company.video_url = company_result["video_url"]
+
+        company.save
+      end
+    end
+  end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

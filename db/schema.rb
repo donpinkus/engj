@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150201222610) do
+ActiveRecord::Schema.define(version: 20150202094933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20150201222610) do
     t.string   "video_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "deleted"
   end
 
   create_table "job_skills", force: true do |t|
@@ -62,7 +63,7 @@ ActiveRecord::Schema.define(version: 20150201222610) do
     t.string   "angellist_url"
     t.string   "location"
     t.string   "role"
-    t.integer  "company_id"
+    t.integer  "company_angel_id"
     t.integer  "page_id"
     t.datetime "created_at"
     t.datetime "updated_at"
