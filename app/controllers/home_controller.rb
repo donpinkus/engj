@@ -69,9 +69,6 @@ class HomeController < ApplicationController
   end
 
   def skill_analyzer
-    puts "============="
-    puts params[:skill_name]
-
     job_skills = JobSkill.where(name: params[:skill_name])
 
     jobs = Job.joins(:job_skills).where(job_skills: {name: params[:skill_name]}, jobs: {currency_code: "USD"}).where.not(jobs: {salary_max: nil, salary_min: nil}).where("salary_min < salary_max")
@@ -79,15 +76,27 @@ class HomeController < ApplicationController
     # JOBS
     new_jobs_this_week = jobs.where("listing_created_at > LOCALTIMESTAMP - INTERVAL '7 days'").count
 
+    # sql = "
+    #   SELECT
+    #     date_part('month', listing_created_at) AS month,
+    #     COUNT(1) AS new_job_count
+    #   FROM jobs
+    #   INNER JOIN job_skills
+    #     ON jobs.id = job_skills.job_id
+    #     AND job_skills.name = '#{params[:skill_name]}'
+    #   WHERE currency_code = 'USD'
+    #   GROUP BY month"
+
     sql = "
       SELECT
-        date_part('month', listing_created_at) AS month,
+        to_char(listing_created_at, 'Mon-YY') AS month,
         COUNT(1) AS new_job_count
       FROM jobs
       INNER JOIN job_skills
         ON jobs.id = job_skills.job_id
         AND job_skills.name = '#{params[:skill_name]}'
       WHERE currency_code = 'USD'
+      AND listing_created_at >= '2014-01-01'
       GROUP BY month"
 
     records = ActiveRecord::Base.connection.execute(sql)
