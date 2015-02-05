@@ -69,6 +69,9 @@ class HomeController < ApplicationController
   end
 
   def skill_analyzer
+    puts "============="
+    puts params[:skill_name]
+
     job_skills = JobSkill.where(name: params[:skill_name])
 
     jobs = Job.joins(:job_skills).where(job_skills: {name: params[:skill_name]}, jobs: {currency_code: "USD"}).where.not(jobs: {salary_max: nil, salary_min: nil}).where("salary_min < salary_max")
@@ -169,5 +172,27 @@ class HomeController < ApplicationController
     }
 
     render json: summary
+  end
+
+  def skills
+    # JOBS
+    sql = "
+      SELECT
+        name
+      FROM (
+        SELECT
+          name,
+          COUNT(1) AS occurrences
+        FROM job_skills
+        GROUP BY name
+      ) a
+      WHERE occurrences > 10
+      ORDER BY occurrences DESC
+    "
+
+    records = ActiveRecord::Base.connection.execute(sql)
+    skills = records.to_json
+
+    render json: { skills: skills }
   end
 end

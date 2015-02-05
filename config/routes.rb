@@ -3,7 +3,8 @@ Rails.application.routes.draw do
 
   get '/summary', to: 'home#summary'
   get '/summary/:role_filter', to: 'home#summary'
-  get '/skill_analyzer/:skill_name', to: 'home#skill_analyzer'
+  get '/skill_analyzer', to: 'home#skill_analyzer'
+  get '/skills', to: 'home#skills'
 
   root 'home#index'
 
