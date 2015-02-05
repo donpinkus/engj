@@ -132,6 +132,31 @@ class HomeController < ApplicationController
 
     bucketed_salaries_json = bucketed_salaries_records.to_json
 
+
+    # Related Skills
+    related_skills_sql = "
+      SELECT
+        COUNT(1) AS occurrences,
+        job_skills.name
+      FROM (
+        -- Get all jobs for the skill
+        SELECT DISTINCT job_id AS job_id
+        FROM job_skills
+        WHERE name = '#{params[:skill_name]}'
+      ) job_ids
+      INNER JOIN job_skills
+      ON job_ids.job_id = job_skills.job_id
+      WHERE name <> '#{params[:skill_name]}'
+      GROUP BY job_skills.name
+      ORDER BY occurrences DESC
+      LIMIT 20
+    "
+
+    related_skills_records = ActiveRecord::Base.connection.execute(related_skills_sql)
+
+    related_skills_json = related_skills_records.to_json
+
+
     summary = {
       total_jobs: jobs.count,
       new_jobs_this_week: new_jobs_this_week,
@@ -139,6 +164,7 @@ class HomeController < ApplicationController
       med_min_salary: med_min_salary,
       med_max_salary: med_max_salary,
       salary_buckets: bucketed_salaries_json,
+      related_skills: related_skills_json,
       skill: params[:skill_name]
     }
 

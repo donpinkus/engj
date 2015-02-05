@@ -17,16 +17,6 @@ myApp.config(['$routeProvider', function($routeProvider) {
 }]);
 
 
-// myApp.service('nameService', function(){
-//   var self = this;
-
-//   this.name = "John Doe";
-//   this.nameLength = function(){
-//     return self.name.length;
-//   }
-// });
-
-
 myApp.controller('summary', ['$scope', '$http', '$log', '$routeParams', function($scope, $http, $log, $routeParams){
   $scope.roleFilter = null;
 
@@ -61,14 +51,25 @@ myApp.controller('skillAnalyzer', ['$scope', '$http', '$log', '$routeParams', fu
   $scope.getSkillSummary = function() {
     $http.get('/skill_analyzer/' + $scope.skill).
       success(function(data, status, headers, config) {
-        console.log(data);
         $scope.summary = data;
         $scope.bucketedSalaries = JSON.parse(data["salary_buckets"]);
         $scope.bucketedJobs = JSON.parse(data["new_jobs_by_month"])
-        console.log($scope.bucketedSalaries);
+        $scope.relatedSkills = JSON.parse(data["related_skills"]);
+        console.log($scope.relatedSkills);
       }).
       error(function(data, status, headers, config) {
         console.log(data);
       });
   }
 }]);
+
+
+
+
+
+
+
+
+
+
+
