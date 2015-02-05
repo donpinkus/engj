@@ -40,7 +40,7 @@
           New jobs this week: {{summary.new_jobs_this_week}}
         </div>
         <graph data="bucketedJobs" width="100%" height="300px">
-          <x field="month" order-by="Date"></x>
+          <x field="date" order-by="Date"></x>
           <y field="new_job_count"></y>
           <line field="new_jobs"></line>
         </graph>

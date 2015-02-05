@@ -89,7 +89,9 @@ class HomeController < ApplicationController
 
     sql = "
       SELECT
-        to_char(listing_created_at, 'Mon-YY') AS month,
+        to_char(listing_created_at, 'Mon-YY') AS date,
+        date_part('month', listing_created_at) AS month,
+        date_part('year', listing_created_at) AS year,
         COUNT(1) AS new_job_count
       FROM jobs
       INNER JOIN job_skills
@@ -97,7 +99,8 @@ class HomeController < ApplicationController
         AND job_skills.name = '#{params[:skill_name]}'
       WHERE currency_code = 'USD'
       AND listing_created_at >= '2014-01-01'
-      GROUP BY month"
+      GROUP BY date, month, year
+      ORDER BY year ASC, month ASC"
 
     records = ActiveRecord::Base.connection.execute(sql)
     new_jobs_by_month = records.to_json
