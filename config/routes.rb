@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get '/summary/:role_filter', to: 'home#summary'
   get '/skill_analyzer', to: 'home#skill_analyzer'
   get '/skills', to: 'home#skills'
+  get '/compare', to: 'home#compare'
 
   root 'home#index'
 

@@ -205,4 +205,33 @@ class HomeController < ApplicationController
 
     render json: { skills: skills }
   end
+
+  def compare
+    # See which has more jobs.
+    sql = "
+      SELECT
+        to_char(listing_created_at, 'YYYY-MM') AS month_sortable,
+        to_char(listing_created_at, 'Mon-YY') AS month_string,
+        COUNT(1) AS new_job_count,
+        job_skills.name
+      FROM jobs
+      INNER JOIN job_skills
+        ON jobs.id = job_skills.job_id
+      WHERE currency_code = 'USD'
+      AND (job_skills.name = '#{params[:first_skill]}' OR job_skills.name = '#{params[:second_skill]}')
+      AND listing_created_at >= '2014-01-01'
+      GROUP BY month_sortable, month_string, job_skills.name"
+
+    records = ActiveRecord::Base.connection.execute(sql)
+    new_jobs_by_month = records.to_json
+
+    # get the jobs trends for both
+
+    # get the salary buckets for both
+
+
+
+
+    render json: { new_jobs_by_month: new_jobs_by_month }
+  end
 end

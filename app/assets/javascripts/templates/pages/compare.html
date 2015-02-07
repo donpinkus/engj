@@ -1,0 +1,28 @@
+<md-content class="md-padding">
+  <div>
+    <h1>Compare</h1>
+    <p>Compare two skills. Helps you decide which one to learn.</p>
+  </div>
+  <div>
+    <form ng-submit="compare()">
+      <div class="form-group">
+        <label>First Skill</label>
+        <input ng-model="firstSkill" placeholder="python" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Second Skill</label>
+        <input ng-model="secondSkill" placeholder="javascript" class="form-control">
+      </div>
+      <button class="btn btn-primary">Compare</button>
+    </form>
+  </div>
+  <div>
+    {{ firstSkill }}
+    <graph data="jobGrowth" width="100%" height="300px">
+      <x field="month_string" order-by="month_sortable"></x>
+      <y field="new_job_count"></y>
+      <line field="name" value="python"></line>
+      <line field="name" value="ruby"></line>
+    </graph>
+  </div>
+</md-content>

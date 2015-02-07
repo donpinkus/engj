@@ -13,7 +13,11 @@ myApp.config(['$routeProvider', function($routeProvider) {
   .when('/skill-analyzer/:skill', {
     templateUrl: 'pages/skill-analyzer.html',
     controller: 'skillAnalyzer'
-  });
+  })
+  .when('/compare', {
+    templateUrl: 'pages/compare.html',
+    controller: 'compare'
+  })
 }]);
 
 
@@ -73,6 +77,17 @@ myApp.controller('skillAnalyzer', ['$scope', '$http', '$log', '$routeParams', fu
         console.log(data);
       });
   }
+}]);
+
+
+
+myApp.controller('compare', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams){
+  $scope.compare = function(){
+    $http.get('/compare?first_skill=' + $scope.firstSkill + '&second_skill=' + $scope.secondSkill).then(function(data){
+      $scope.jobGrowth = JSON.parse(data.data.new_jobs_by_month);
+    });
+  }
+
 }]);
 
 
