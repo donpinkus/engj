@@ -17,12 +17,13 @@
     </form>
   </div>
   <div>
-    {{ firstSkill }}
     <graph data="jobGrowth" width="100%" height="300px">
       <x field="month_string" order-by="month_sortable"></x>
       <y field="new_job_count"></y>
+      <legend></legend>
       <line field="name" value="python"></line>
       <line field="name" value="ruby"></line>
+
     </graph>
   </div>
 </md-content>
