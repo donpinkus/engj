@@ -21,6 +21,28 @@ myApp.config(['$routeProvider', function($routeProvider) {
 }]);
 
 
+
+myApp.directive('skillTypeahead', ['$http', function($http){
+  return {
+    link: function(scope, data, attrs){
+      scope.inputModel = attrs.inputModel;
+
+      $http.get('/skills')
+        .success(function(data, status, headers, config){
+
+          var skills = JSON.parse(data.skills);
+
+          var skillNames = $.map(skills, function(value, index) {
+            return [value.name];
+          });
+
+          scope.skills = skillNames;
+        });
+    },
+    templateUrl: 'skill-typeahead.html'
+  }
+}]);
+
 myApp.controller('summary', ['$scope', '$http', '$log', '$routeParams', function($scope, $http, $log, $routeParams){
   $scope.roleFilter = null;
 
@@ -51,18 +73,6 @@ myApp.controller('summary', ['$scope', '$http', '$log', '$routeParams', function
 
 myApp.controller('skillAnalyzer', ['$scope', '$http', '$log', '$routeParams', function($scope, $http, $log, $routeParams){
   $scope.skill = $routeParams.skill || '';
-
-  $http.get('/skills')
-    .success(function(data, status, headers, config){
-
-      var skills = JSON.parse(data.skills);
-
-      var skillNames = $.map(skills, function(value, index) {
-        return [value.name];
-      });
-
-      $scope.skills = skillNames;
-    });
 
   $scope.getSkillSummary = function() {
     $http.get('/skill_analyzer?skill_name=' + encodeURIComponent($scope.skill)).

@@ -6,13 +6,7 @@
       <p>The skill analyzer shows information about the job market, salaries, companies, and popularity of any engineering skill.
       </p>
       <div class="input-group">
-        <input
-          class="form-control"
-          type="text"
-          ng-model="skill"
-          typeahead="skill for skill in skills | filter:$viewValue | limitTo:8"
-          placeholder="Enter a skill"
-          autofocus>
+        <skill-typeahead input-model="skill"></skill-typeahead>
         <span class="input-group-btn">
           <button class="btn btn-primary" type="button" ng-click="getSkillSummary()">
             Summarize
