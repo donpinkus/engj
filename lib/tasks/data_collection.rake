@@ -10,7 +10,7 @@ namespace :data_collection do
 
     while (page <= 303)
       # Get Jobs
-      path = "https://api.angel.co/1/jobs?page=" + page.to_s
+      path = "https://api.angel.co/1/jobs?access_token=7eb754e725a3e3db031a51d18f831e878415d71501a0840d2&page=" + page.to_s
 
       buffer = open(path).read
       result = JSON.parse(buffer)
@@ -81,7 +81,7 @@ namespace :data_collection do
               company.angel_id = company_angel_id
 
               # Fetch company info.
-              response = HTTParty.get("https://api.angel.co/1/startups/#{angel_id}")
+              response = HTTParty.get("https://api.angel.co/1/startups/#{angel_id}?access_token=7eb754e725a3e3db031a51d18f831e878415d71501a0840d2")
 
               puts response.code
 
@@ -146,7 +146,7 @@ namespace :data_collection do
         company.angel_id = angel_id
 
         # Fetch company info.
-        response = HTTParty.get("https://api.angel.co/1/startups/#{angel_id}")
+        response = HTTParty.get("https://api.angel.co/1/startups/#{angel_id}?access_token=7eb754e725a3e3db031a51d18f831e878415d71501a0840d2")
 
         puts response.code
 
