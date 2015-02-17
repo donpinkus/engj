@@ -17,7 +17,14 @@ namespace :data_collection do
       puts result["jobs"].count
 
       result["jobs"].each do |j|
-        puts "\n\n JOB \n"
+        puts "\n\n JOB: " + j["id"].to_s
+
+        # Check if job exists
+        if Job.exists?(angel_id: j["id"])
+          puts "Job " + j["id"].to_s + " already exists in DB".
+          next
+        end
+
         job = Job.new
         job.angel_id = j["id"]
         job.company_angel_id = j["startup"]["id"]
@@ -52,74 +59,110 @@ namespace :data_collection do
         job.role = role
 
 
-        begin
-          if job.save
-            puts job.to_yaml
+        if job.save
+          puts "Saved a new job."
 
-            # Company
-            company_angel_id = job.company_angel_id
+          # Tags
+          puts "about to loop through tags"
+          puts j["tags"].count
+          j["tags"].each do |tag|
+            puts "Saving a job's tag with tag ID: " + tag["id"].to_s
 
-            if !Company.exists?(angel_id: company_angel_id)
-              puts "Getting company info for #{company_angel_id}"
+            if !AngelTag.exists?(angel_id: tag["id"])
+              puts "NEW ANGEL TAG!!!!!"
+              angel_tag = AngelTag.new
+              angel_tag.angel_id = tag["id"]
+              angel_tag.tag_type = tag["tag_type"]
+              angel_tag.name = tag["name"]
+              angel_tag.display_name = tag["display_name"]
+              angel_tag.angellist_url = tag["angellist_url"]
 
-              company = Company.new
-              company.angel_id = company_angel_id
-
-              response = HTTParty.get("https://api.angel.co/1/startups/#{angel_id}?access_token=eb754e725a3e3db031a51d18f831e878415d71501a0840d2")
-
-              if response.code == 404
-                puts "This company no longer exists."
-                company.deleted = true
-                company.save
-                next
-              elsif response.code == 403
-                puts "Over rate limit."
-                break
-              end
-
-              company_result = JSON.parse(response.body)
-
-              puts company_result.to_yaml
-
-              # Set company info
-              company.hidden = company_result["hidden"]
-              company.community_profile = company_result["community_profile"]
-              company.name = company_result["name"]
-              company.angellist_url = company_result["angellist_url"]
-              company.logo_url = company_result["logo_url"]
-              company.thumb_url = company_result["thumb_url"]
-              company.quality = company_result["quality"]
-              company.product_desc = company_result["product_desc"]
-              company.high_concept = company_result["high_concept"]
-              company.follower_count = company_result["follower_count"]
-              company.company_url = company_result["company_url"]
-              company.angel_created_at = company_result["angel_created_at"]
-              company.angel_updated_at = company_result["angel_updated_at"]
-              company.twitter_url = company_result["twitter_url"]
-              company.blog_url = company_result["blog_url"]
-              company.video_url = company_result["video_url"]
-
-              company.save
+              angel_tag.save!
+              puts "saved \n\n"
+            else
+              puts "Tag " + tag["id"].to_s + " exists"
+              angel_tag = AngelTag.find_by_angel_id(tag["id"])
             end
 
-            # Skills
-            j["tags"].each do |t|
-              if t["tag_type"] == "SkillTag"
-
-                puts t["name"]
-                skill = JobSkill.new
-                skill.angel_id = t["id"]
-                skill.name = t["name"]
-                skill.job_id = job.id
-                if skill.save
-                else
-                  puts "-- SKILL FAILED TO SAVE --"
-                end
-              end
+            if !AngelTagging.exists?(angel_tag_id: angel_tag.id, angel_taggable_id: job.id, angel_taggable_type: "job")
+              angel_tagging = AngelTagging.new
+              angel_tagging.angel_tag_id = angel_tag.id
+              angel_tagging.angel_taggable_id = job.id
+              angel_tagging.angel_taggable_type = "job"
+              angel_tagging.save!
+              puts "angel tagging saved \n"
+            else
+              puts "AngelTagging already existed. Error?"
             end
-
           end
-        rescue
+
+          # Skills
+          j["tags"].each do |t|
+            if t["tag_type"] == "SkillTag"
+
+              puts t["name"]
+              skill = JobSkill.new
+              skill.angel_id = t["id"]
+              skill.name = t["name"]
+              skill.job_id = job.id
+              if skill.save
+              else
+                puts "-- SKILL FAILED TO SAVE --"
+              end
+            end
+          end
+
+          # Company
+          company_angel_id = job.company_angel_id
+
+          if !Company.exists?(angel_id: company_angel_id)
+            puts "Getting company info for #{company_angel_id}"
+
+            company = Company.new
+            company.angel_id = company_angel_id
+
+            response = HTTParty.get("https://api.angel.co/1/startups/#{company_angel_id}?access_token=eb754e725a3e3db031a51d18f831e878415d71501a0840d2")
+
+            puts "got company info"
+
+            if response.code == 404
+              puts "This company no longer exists."
+              company.deleted = true
+              company.save
+              next
+            elsif response.code == 403
+              puts "Over rate limit."
+              break
+            end
+
+            company_result = JSON.parse(response.body)
+
+            puts company_result.to_yaml
+
+            # Set company info
+            company.hidden = company_result["hidden"]
+            company.community_profile = company_result["community_profile"]
+            company.name = company_result["name"]
+            company.angellist_url = company_result["angellist_url"]
+            company.logo_url = company_result["logo_url"]
+            company.thumb_url = company_result["thumb_url"]
+            company.quality = company_result["quality"]
+            company.product_desc = company_result["product_desc"]
+            company.high_concept = company_result["high_concept"]
+            company.follower_count = company_result["follower_count"]
+            company.company_url = company_result["company_url"]
+            company.angel_created_at = company_result["angel_created_at"]
+            company.angel_updated_at = company_result["angel_updated_at"]
+            company.twitter_url = company_result["twitter_url"]
+            company.blog_url = company_result["blog_url"]
+            company.video_url = company_result["video_url"]
+
+            company.save
+
+            puts "company saved"
+          else
+            puts job.errors.full_messages
+          end
         end
       end
 

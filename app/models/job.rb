@@ -2,6 +2,8 @@ class Job < ActiveRecord::Base
   belongs_to :company, foreign_key: "angel_id"
   has_many :job_skills
 
+  has_many :angel_taggings, :as => :angel_taggable
+
   validates_uniqueness_of :angel_id
   validates :currency_code, length: { maximum: 255 }
   validates :job_type, length: { maximum: 255 }

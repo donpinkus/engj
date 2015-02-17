@@ -11,10 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150202094933) do
+ActiveRecord::Schema.define(version: 20150217010849) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "angel_taggings", id: false, force: true do |t|
+    t.integer  "angel_tag_id"
+    t.integer  "angel_taggable_id"
+    t.string   "angel_taggable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "angel_tags", primary_key: "angel_id", force: true do |t|
+    t.string   "tag_type"
+    t.text     "name"
+    t.text     "display_name"
+    t.text     "angellist_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "companies", primary_key: "angel_id", force: true do |t|
     t.boolean  "hidden"
