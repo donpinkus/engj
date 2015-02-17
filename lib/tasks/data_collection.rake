@@ -51,25 +51,10 @@ namespace :data_collection do
         end
         job.role = role
 
+
         begin
           if job.save
             puts job.to_yaml
-
-            # Skills
-            j["tags"].each do |t|
-              if t["tag_type"] == "SkillTag"
-
-                puts t["name"]
-                skill = JobSkill.new
-                skill.angel_id = t["id"]
-                skill.name = t["name"]
-                skill.job_id = job.id
-                if skill.save
-                else
-                  puts "-- SKILL FAILED TO SAVE --"
-                end
-              end
-            end
 
             # Company
             company_angel_id = job.company_angel_id
@@ -80,10 +65,7 @@ namespace :data_collection do
               company = Company.new
               company.angel_id = company_angel_id
 
-              # Fetch company info.
               response = HTTParty.get("https://api.angel.co/1/startups/#{angel_id}?access_token=eb754e725a3e3db031a51d18f831e878415d71501a0840d2")
-
-              puts response.code
 
               if response.code == 404
                 puts "This company no longer exists."
@@ -118,6 +100,22 @@ namespace :data_collection do
               company.video_url = company_result["video_url"]
 
               company.save
+            end
+
+            # Skills
+            j["tags"].each do |t|
+              if t["tag_type"] == "SkillTag"
+
+                puts t["name"]
+                skill = JobSkill.new
+                skill.angel_id = t["id"]
+                skill.name = t["name"]
+                skill.job_id = job.id
+                if skill.save
+                else
+                  puts "-- SKILL FAILED TO SAVE --"
+                end
+              end
             end
 
           end
