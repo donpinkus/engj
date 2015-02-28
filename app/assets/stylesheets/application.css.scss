@@ -23,3 +23,308 @@
 graph {
   box-sizing: initial;
 }
+
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap";
+
+$lightPink: #FFBAD1;
+
+$green: #70D101;
+$orange: #FFB946;
+$yellow: #F5D709;
+$pink: #FF7EAA;
+$blue: #2196F3;
+
+$lightRed: #F88686;
+$lightOrange: #F8BB86;
+
+html {
+  height: 100%;
+}
+
+body, .viewContainer {
+  height: 100%;
+}
+
+.bluePage {
+  background: #2196F3;
+  color: white;
+  min-height: 100%;
+}
+
+.light {
+  font-weight: lighter;
+}
+
+.flexColumnContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+
+.topNav {
+  margin-top: 20px;
+  .logo {
+    font-size: 25px;
+    font-weight: normal;
+    > span {
+      font-weight: lighter;
+    }
+    .lightPink {
+      color: $lightPink
+    }
+  }
+  .loginButtons {
+    margin-top: 8px;
+    a {
+      color: white;
+      margin-right: 10px;
+    }
+  }
+}
+
+.hollowBtn {
+  /* View Your Data: */
+  font-size: 20px;
+  color: lighten($lightPink, 5);
+  line-height: 24px;
+  text-shadow: 0px 2px 4px rgba(0,0,0,0.06);
+  padding: 10px 20px;
+  /* Rectangle 34: */
+  border: 2px solid $lightPink;
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.19);
+  border-radius: 5px;
+  font-size: 20px;
+  &:hover {
+    background: white;
+    color: $blue;
+    border: 2px solid white;
+    text-decoration: none;
+  }
+}
+
+.titleSection {
+  margin-top: 60px;
+  h1 {
+    font-size: 30px;
+    font-weight: 500;
+    font-weight: normal;
+  }
+  .hollowBtn {
+    margin-top: 60px;
+    display: inline-block;
+  }
+  .exampleLink {
+    margin-top: 10px;
+    font-size: 20px;
+    a {
+      color: $lightPink;
+    }
+  }
+  p {
+    font-size: 20px;
+margin-top: 40px;
+  }
+}
+
+.middleHero {
+  position: relative;
+  height: 576px;
+  .heroContainer {
+    display: table;
+    width: 100%;
+  }
+  .hero {
+    /* Rectangle 34: */
+    margin: 165px auto 0;
+    z-index: 2;
+    position: relative;
+    .item {
+      -webkit-animation: 0.7s bounce linear forwards 0s;
+      -webkit-transform-origin: 50% 0;
+      -moz-transform-origin: 50% 0;
+      -o-transform-origin: 50% 0;
+      -ms-transform-origin: 50% 0;
+      transform-origin: 50% 0;
+      display: inline-block;
+      color: white;
+      width: 220px;
+      height: 220px;
+      .innerItem {
+        display: inline-block;
+        -webkit-animation: fadeIn 0.9s ease-out;
+      }
+      &:hover {
+        h4 {
+          text-decoration: underline !important;
+        }
+      }
+      h4 {
+        font-size: 25px;
+      }
+      &:nth-child(1) {
+        margin-left: 0;
+      }
+      img {
+        margin-top: 26px;
+        margin-bottom: 5px;
+      }
+      &.green {
+        background: $green;
+      }
+      &.orange {
+        background: $orange;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+      &.yellow {
+        background: $yellow;
+      }
+      &.pink {
+        background: $pink;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+    }
+  }
+  .arrowUnitTop, .arrowUnitBottom {
+    background-image: url("/bg-arrows.png");
+    background-repeat: repeat-x;
+    background-position: bottom left;
+    height: 288px;
+  }
+  .arrowUnitTop {
+    position: absolute;
+    top: 0;
+    bottom: 288px;
+    left: 0;
+    right: 0;
+  }
+  .arrowUnitBottom {
+    position: absolute;
+    top: 288px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: scaleY(-1);
+  }
+}
+
+.supportedDatabases {
+  h3 {
+    font-weight: normal;
+    padding-bottom: 10px;
+  }
+  .lightRed {
+    background: $lightRed;
+    display: inline-block;
+    width: 175px;
+    height: 60px;
+    font-size: 20px;
+    padding-top: 17px;
+  }
+  .lightOrange {
+    background: $lightOrange;
+    display: inline-block;
+    width: 175px;
+    height: 60px;
+    font-size: 20px;
+    padding-top: 17px;
+  }
+}
+
+footer {
+  margin-top: 40px;
+  border-top: 1px solid hsla(0, 100%, 100%, 0.33);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  a {
+    margin-left: 20px;
+    color: hsla(0, 100%, 100%, 0.86);
+    &:hover {
+      color: white;
+    }
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes bounce {
+  0% {
+    -webkit-transform: scaleY(0);
+    -moz-transform: scaleY(0);
+    -o-transform: scaleY(0);
+    -ms-transform: scaleY(0);
+    transform: scaleY(0);
+  }
+  40% {
+    -webkit-transform: scaleY(1);
+    -moz-transform: scaleY(1);
+    -o-transform: scaleY(1);
+    -ms-transform: scaleY(1);
+    transform: scaleY(1);
+  }
+  60% {
+    -webkit-transform: scaleY(0.7);
+    -moz-transform: scaleY(0.7);
+    -o-transform: scaleY(0.7);
+    -ms-transform: scaleY(0.7);
+    transform: scaleY(0.7);
+  }
+  75% {
+    -webkit-transform: scaleY(1);
+    -moz-transform: scaleY(1);
+    -o-transform: scaleY(1);
+    -ms-transform: scaleY(1);
+    transform: scaleY(1);
+  }
+  83% {
+    -webkit-transform: scaleY(0.8);
+    -moz-transform: scaleY(0.8);
+    -o-transform: scaleY(0.8);
+    -ms-transform: scaleY(0.8);
+    transform: scaleY(0.8);
+  }
+  100% {
+    -webkit-transform: scaleY(1);
+    -moz-transform: scaleY(1);
+    -o-transform: scaleY(1);
+    -ms-transform: scaleY(1);
+    transform: scaleY(1);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

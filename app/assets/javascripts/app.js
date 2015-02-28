@@ -3,6 +3,10 @@ var myApp = angular.module('myApp', ['templates', 'ngMaterial', 'angular-dimple'
 myApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider
   .when('/', {
+    templateUrl: 'pages/home.html',
+    controller: 'home'
+  })
+  .when('/summary', {
     templateUrl: 'pages/summary.html',
     controller: 'summary'
   })
@@ -20,7 +24,11 @@ myApp.config(['$routeProvider', function($routeProvider) {
   })
 }]);
 
-
+myApp.directive('topNav', function(){
+  return {
+    templateUrl: 'top-nav.html'
+  }
+});
 
 myApp.directive('skillTypeahead', ['$http', function($http){
   return {
@@ -41,6 +49,11 @@ myApp.directive('skillTypeahead', ['$http', function($http){
     },
     templateUrl: 'skill-typeahead.html'
   }
+}]);
+
+
+myApp.controller('home', ['$scope', function($scope){
+
 }]);
 
 myApp.controller('summary', ['$scope', '$http', '$log', '$routeParams', function($scope, $http, $log, $routeParams){

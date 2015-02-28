@@ -25,6 +25,8 @@ namespace :data_collection do
           next
         end
 
+        puts "Saving Job"
+
         job = Job.new
         job.angel_id = j["id"]
         job.company_angel_id = j["startup"]["id"]
@@ -60,16 +62,16 @@ namespace :data_collection do
 
 
         if job.save
-          puts "Saved a new job."
+          puts "Saved a new job. \n\n"
 
           # Tags
-          puts "about to loop through tags"
+          puts "Tags count:"
           puts j["tags"].count
           j["tags"].each do |tag|
-            puts "Saving a job's tag with tag ID: " + tag["id"].to_s
+            puts "Saving Job Tag ID: " + tag["id"].to_s
 
             if !AngelTag.exists?(angel_id: tag["id"])
-              puts "NEW ANGEL TAG!!!!!"
+              puts "Saving AngelTag"
               angel_tag = AngelTag.new
               angel_tag.angel_id = tag["id"]
               angel_tag.tag_type = tag["tag_type"]
@@ -78,7 +80,7 @@ namespace :data_collection do
               angel_tag.angellist_url = tag["angellist_url"]
 
               angel_tag.save!
-              puts "saved \n\n"
+              puts "saved AngelTag\n\n"
             else
               puts "Tag " + tag["id"].to_s + " exists"
               angel_tag = AngelTag.find_by_angel_id(tag["id"])
@@ -90,7 +92,7 @@ namespace :data_collection do
               angel_tagging.angel_taggable_id = job.id
               angel_tagging.angel_taggable_type = "job"
               angel_tagging.save!
-              puts "angel tagging saved \n"
+              puts "Saved AngelTagging \n\n"
             else
               puts "AngelTagging already existed. Error?"
             end
@@ -99,13 +101,13 @@ namespace :data_collection do
           # Skills
           j["tags"].each do |t|
             if t["tag_type"] == "SkillTag"
-
-              puts t["name"]
+              puts "Saving JobSkill"
               skill = JobSkill.new
               skill.angel_id = t["id"]
               skill.name = t["name"]
               skill.job_id = job.id
               if skill.save
+                puts "Saved JobSkill"
               else
                 puts "-- SKILL FAILED TO SAVE --"
               end
@@ -136,8 +138,6 @@ namespace :data_collection do
             end
 
             company_result = JSON.parse(response.body)
-
-            puts company_result.to_yaml
 
             # Set company info
             company.hidden = company_result["hidden"]
@@ -189,6 +189,7 @@ namespace :data_collection do
         # Fetch company info.
         response = HTTParty.get("https://api.angel.co/1/startups/#{angel_id}?access_token=eb754e725a3e3db031a51d18f831e878415d71501a0840d2")
 
+        puts "Response Code:"
         puts response.code
 
         if response.code == 404
@@ -202,8 +203,6 @@ namespace :data_collection do
         end
 
         company_result = JSON.parse(response.body)
-
-        puts company_result.to_yaml
 
         # Set company info
         company.hidden = company_result["hidden"]
